@@ -17,6 +17,11 @@ struct T_Sommet{
     T_Sommet * Rson;
 };
 
-T_Sommet *creerSommer(int element)
+T_Sommet *creerSommer(int element);
+int empty_abr(T_Arbre abr);
+T_Sommet *rechercherElement(T_Arbre abr, int element);
+void afficher_intervalle(T_Sommet som);
+void afficherSommet(T_Arbre abr);
+void afficherElements(T_Arbre abr);
 
 #endif //TP4_TP3_H
