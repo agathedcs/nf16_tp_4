@@ -8,16 +8,16 @@ typedef struct Sommet T_Sommet;
 struct Sommet {
     int inf;
     int sup;
-    struct Sommet* Gson;
-    struct Sommet* Rson;
+    T_Sommet* Lson;
+    T_Sommet* Rson;
 };
-typedef T_Sommet T_Arbre
+typedef T_Sommet* T_Arbre;
 
 T_Sommet *creerSommer(int element);
-T_Arbre insererElement (T_arbre abr, int element);
+T_Arbre insererElement (T_Arbre abr, int element);
 int empty_abr(T_Arbre abr);
 T_Sommet *rechercherElement(T_Arbre abr, int element);
-int *rechercherElement_test(T_Arbre abr, int element);
+T_Sommet *rechercherElement_messageless(T_Arbre abr, int element);
 void afficher_intervalle(T_Sommet som);
 void afficherSommet(T_Arbre abr);
 void afficherElements(T_Arbre abr);

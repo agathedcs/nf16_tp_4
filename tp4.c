@@ -43,7 +43,7 @@ T_Sommet *rechercherElement(T_Arbre abr, int element){
     }
 }
 
-int *rechercherElement_test(T_Arbre abr, int element){
+T_Sommet *rechercherElement_messageless(T_Arbre abr, int element){
     if (empty_abr(abr)){
         return 0;
     }
@@ -57,7 +57,7 @@ int *rechercherElement_test(T_Arbre abr, int element){
                 current = current->Rson;
             }
             else {
-                return 1;
+                return current;
             }
         }
         if (current == NULL){
@@ -75,7 +75,7 @@ void afficher_intervalle(T_Sommet som){
 }
 
 void afficherSommet(T_Arbre abr){
-    if (empty_abr(abr) == 0){
+    if (abr != NULL){
         printf("[%d:%d] ",abr->inf,abr->sup);
         afficherSommet(abr->Lson);
         afficherSommet(abr->Rson);
@@ -83,36 +83,59 @@ void afficherSommet(T_Arbre abr){
 }
 
 void afficherElements(T_Arbre abr){
-    if (empty_abr(abr) == 0){
+    if (abr != NULL){
         afficher_intervalle(*abr);
         afficherElements(abr->Lson);
         afficherElements(abr->Rson);
     }
 }
 
-T_Arbre insererElement (T_arbre abr, int element){
-    if (rechercherElement_test(abr, element))
-        throw "L'element existe deja.";
-    if (abr != NULL) {
-        T_Sommet *tmp1 = abr;
-        while ((element + 1)< tmp->inf && tmp1->Lson != NULL){
-            tmp1 = tmp1->Lson;
-        }
-        T_Sommet *tmp2 = tmp1;
-        while ((tmp->sup + 1) < element && tmp->Rson != NULL){
-            tmp2 = tmp2->Rson;
-        }
 
+T_Arbre insererElement (T_Arbre abr, int element){
+    if (abr == NULL)
+        return creerSommer(element);
 
-        if (element+1 == tmp->inf){
-            if (tmp->Lson->sup + 1 ==element){
-                T_Sommet *tmp2 = tmp->Lson;
-                tmp->inf = tmp2->inf;
-                tmp->Lson = tmp2->Lson;
-                //dans cette configuration,
+    if (abr->sup + 1 < element)
+        abr->Rson = insererElement(abr->Rson, element);
+    else if (element + 1 < abr->inf)
+        abr->Lson = insererElement(abr->Lson, element);
+    else {
+        if (element == abr->sup + 1)
+            abr->sup = element;
+        else if (element + 1 == abr->inf)
+            abr->inf = element;
+
+        T_Sommet* tmp = abr;
+        T_Sommet* dinf = abr->Lson;
+        while (dinf != NULL && (dinf->sup + 1) != abr->inf){
+            tmp = dinf;
+            dinf = dinf->Rson;
+        }
+        if (dinf != NULL){
+            abr->inf = dinf->inf;
+            if (tmp == abr)
+                tmp->Lson = dinf->Lson;
+            else
+                tmp->Rson = dinf->Lson;
+            free(dinf);
+        }
+        else {
+            tmp = abr;
+            T_Sommet* dsup = abr->Rson;
+            while (dsup != NULL && (abr->sup + 1) != dsup->inf){
+                tmp = dsup;
+                dsup = dsup->Lson;
+            }
+            if (dsup != NULL){
+                abr->sup = dsup->sup;
+                if (tmp == abr)
+                    tmp->Rson = dsup->Rson;
+                else
+                    tmp->Lson = dsup->Rson;
+                free(dsup);
             }
         }
 
     }
-
+    return abr;
 }
