@@ -22,6 +22,8 @@ T_Sommet *rechercherElement_messageless(T_Arbre abr, int element);
 void afficher_intervalle(T_Sommet som);
 void afficherSommet(T_Arbre abr,int retour_ligne);
 void afficherElements(T_Arbre abr,int retour_ligne);
+T_Sommet* minimum(T_Arbre abr);
+T_Arbre supprimerElement(T_Arbre abr, int element);
 int Taille_Memoire(T_Arbre abr);
 void viderBuffer();
 void empty_abr_memory(T_Arbre abr);
