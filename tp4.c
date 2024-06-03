@@ -179,6 +179,64 @@ T_Arbre insererElements(T_Arbre abr, int nb_elements) {
     return abr;
 }
 
+T_Sommet* minimum(T_Arbre abr) {
+    //trouve le minimum des sommets de l'arbre de racine abr = intervalle ayant la plus petite borne inferieure
+    T_Sommet* sommet = abr;
+    while (sommet->Lson != NULL)
+        sommet = sommet->Lson;
+    return sommet;
+}
+
+T_Arbre supprimerElement(T_Arbre abr, int element){
+    if (abr == NULL)
+        return NULL;
+    if (element< abr->inf)
+        abr->Lson = supprimerElement(abr->Lson, element);
+    else if (element > abr->sup)
+        abr->Rson = supprimerElement(abr->Rson, element);
+    else {
+        //on a trouve l'element
+        if (abr->sup == abr->inf){
+            //le sommet ne contient qu'un element donc on supprime ce sommet
+            if (abr->Lson == NULL && abr->Rson == NULL){
+                free(abr);
+                return NULL;
+            }
+            else if (abr->Lson == NULL){
+                T_Sommet* tmp = abr->Rson;
+                free(abr);
+                return tmp;
+            }
+            else if (abr->Rson == NULL){
+                T_Sommet* tmp = abr->Lson;
+                free(abr);
+                return tmp;
+            }
+            else {
+                T_Sommet* tmp = minimum(abr->Rson);
+                abr->inf = tmp->inf;
+                abr->sup = tmp->sup;
+                abr->Rson = supprimerElement(abr->Rson, tmp->inf);
+                //on supprime le sommet et on le remplace par le sommet ayant la plus petite borne inferieure
+            }
+        }
+        else if (element == abr->inf)
+            abr->inf++;
+        else if (element == abr->sup)
+            abr->sup++;
+        else {
+            //la supression de l'element creer 2 nouveaux intervales
+            T_Sommet* nv = creerSommer(abr->inf);
+            nv->sup = element - 1;
+            nv->Lson = abr->Lson;
+            nv->Rson = abr;
+            abr->inf = element + 1;
+            return nv;
+        }
+    }
+    return abr;
+}
+
 int Taille_Memoire(T_Arbre abr){
     if (abr == NULL){
         return 0;
