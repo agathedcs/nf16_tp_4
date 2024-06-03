@@ -1,7 +1,3 @@
-//
-// Created by Arthur Maugée on 02/06/2024.
-//
-
 #ifndef TP4_GIT_TP4_H
 #define TP4_GIT_TP4_H
 
