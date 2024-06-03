@@ -67,7 +67,22 @@ int main()
                 printf("Eléments du graphe :\n");
                 afficherElements(abr,1);
                 break;
-
+            
+            case 6:
+                if(empty_abr(abr))
+                    printf("L'arbre est vide, il n'y a rien à supprimer.\n");
+                else {
+                    printf("Rentrez l'élément à supprimer :\n");
+                    scanf("%d",&element);
+                    if (rechercherElement_messageless(abr,element) == NULL)
+                        printf("L'element n'existe pas dans l'arbre. \n");
+                    else {
+                        abr = supprimerElement(abr, element);
+                        printf("Elément supprimé avec succès !\n")
+                    }
+                }
+                break;
+            
             case 7:
                 printf("La taille en mémoire de l'arbre est égale à %zu bytes\n", Taille_Memoire(abr));
                 break;
