@@ -1,23 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "tp4.h"
-#include "tp4.c"
+
 
 int main()
 {
     char choix[7];
     int nb_elements, element;
     T_Arbre abr = NULL;
+    T_Sommet *som;
     while (1){  //Permet de boucler à l'infini
         printf("Entrez votre choix :\n\t"
-               "1 : Creer un arbre vide\n\t"
+               "1 : Vider  l'arbre vide\n\t"
                "2 : Construire un arbre de N elements\n\t"
                "3 : Ajouter un element\n\t"
                "4 : Afficher tout les sommets\n\t"
                "5 : Afficher tout les éléments\n\t"
-               "6 : Supprimer un élément\n\t"
-               "7 : Afficher la taille en mémoire\n\t"
-               "8 : Quitter\n");
+               "6 : Afficher les fils d'un sommet\n\t"
+               "7 : Supprimer un élément\n\t"
+               "8 : Afficher la taille en mémoire\n\t"
+               "9 : Quitter\n\t");
+
         fgets(choix, sizeof(choix), stdin);
         int choix_entier = atoi(choix);  //convertion de choix en entier
         switch(choix_entier){
@@ -64,11 +67,28 @@ int main()
                 break;
 
             case 5:
-                printf("Eléments du graphe :\n");
-                afficherElements(abr,1);
+                if(empty_abr(abr)){
+                    printf("Arbre vide.\n");
+                }
+                else{
+                    printf("Eléments du graphe :\n");
+                    afficherElements(abr,1);
+                }
+
                 break;
-            
             case 6:
+                if(empty_abr(abr)){
+                    printf("Arbre vide.\n");
+                }
+                else{
+                    printf("Quel sommet ?");
+                    scanf("%d",&element);
+                    som = rechercherElement_messageless(abr,element);
+                    afficher_fils(*som);
+                }
+
+                break;
+            case 7:
                 if(empty_abr(abr))
                     printf("L'arbre est vide, il n'y a rien à supprimer.\n");
                 else {
@@ -78,20 +98,20 @@ int main()
                         printf("L'element n'existe pas dans l'arbre. \n");
                     else {
                         abr = supprimerElement(abr, element);
-                        printf("Elément supprimé avec succès !\n")
+                        printf("Elément supprimé avec succès !\n");
                     }
                 }
                 break;
-            
-            case 7:
+
+            case 8:
                 printf("La taille en mémoire de l'arbre est égale à %zu bytes\n", Taille_Memoire(abr));
                 break;
 
-            case 8:
+            case 9:
                 empty_abr_memory(abr);
                 printf("Sortie du programme\n");
                 exit(0);
-                break;
+
 
             default:
                 printf("La valeur n'est pas accepté, Réeassayez\n");
