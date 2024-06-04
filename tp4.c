@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "tp4.h"
 
-T_Sommet *creerSommet(int element){
+T_Sommet *creerSommer(int element){
     T_Sommet *sommet = malloc(sizeof(T_Sommet));
     sommet->inf = element;
     sommet->sup = element;
@@ -13,19 +13,18 @@ T_Sommet *creerSommet(int element){
 
 int empty_abr(T_Arbre abr){
     if (abr == NULL) {
-        return 1;
-    }else{
         return 0;
+    }else{
+        return 1;
     }
 }
 
 T_Sommet *rechercherElement(T_Arbre abr, int element){
-    if (empty_abr(abr) == 0){
-        printf("L'arbre est vide, le sommet n'a donc pas été trouvé ...\n");
+    if (empty_abr(abr)){
+        printf("L'arbre est vide, le sommet n'a donc pas �t� trouv� ...\n");
     }
     else{
         T_Sommet  *current = abr;
-        //Recherche en profondeur dans l'arbre
         while(current != NULL){
             if (element < current->inf){
                 current = current->Lson;
@@ -33,7 +32,6 @@ T_Sommet *rechercherElement(T_Arbre abr, int element){
             else if (element > current->sup){
                 current = current->Rson;
             }
-            //Cas ou le sommet est dans l'intervalle du sommet actuel
             else {
                 return current;
             }
@@ -63,12 +61,11 @@ T_Sommet *rechercherElement_messageless(T_Arbre abr, int element){
             }
         }
         if (current == NULL){
-            return NULL;
+            return 0;
         }
     }
 }
 
-//Affiche tout les sommets présent dans un intervalle
 void afficher_intervalle(T_Sommet som){
     int inf = som.inf;
     int sup = som.sup;
@@ -77,40 +74,26 @@ void afficher_intervalle(T_Sommet som){
     }
 }
 
-//Fonction récursive qui affiche tout les sommets sous formes d'intervalle
-void afficherSommet(T_Arbre abr,int retour_ligne){
+void afficherSommet(T_Arbre abr){
     if (abr != NULL){
-        if (abr->inf == abr->sup){
-            printf("[%d] ",abr->inf);
-        }
-        else {
-            printf("[%d:%d] ", abr->inf, abr->sup);
-        }
-        afficherSommet(abr->Lson,0);
-        afficherSommet(abr->Rson,0);
-        if (retour_ligne){
-            printf("\n");
-        }
+        printf("[%d:%d] ",abr->inf,abr->sup);
+        afficherSommet(abr->Lson);
+        afficherSommet(abr->Rson);
     }
 }
 
-//Fonction récursive qui affiche tout les éléments dans un abre dans l'ordre croissant
-void afficherElements(T_Arbre abr,int retour_ligne){
+void afficherElements(T_Arbre abr){
     if (abr != NULL){
         afficher_intervalle(*abr);
-        afficherElements(abr->Lson,0);
-        afficherElements(abr->Rson,0);
-        if (retour_ligne){
-            printf("\n");
-        }
+        afficherElements(abr->Lson);
+        afficherElements(abr->Rson);
     }
 }
 
-// Fonction qui ajoute un élement a l'arbre
+
 T_Arbre insererElement (T_Arbre abr, int element){
     if (abr == NULL)
-        //Creer un arbre avec l'élement en racine de l'arbre
-        return creerSommet(element);
+        return creerSommer(element);
 
     if (abr->sup + 1 < element)
         abr->Rson = insererElement(abr->Rson, element);
@@ -155,115 +138,4 @@ T_Arbre insererElement (T_Arbre abr, int element){
 
     }
     return abr;
-}
-
-T_Arbre insererElements(T_Arbre abr, int nb_elements) {
-    int count = 0;
-    int element;
-    while (count < nb_elements) {
-        printf("Elément : ");
-        if (scanf("%d", &element) == 1) {  // Vérifiez si l'entrée est un entier
-            viderBuffer();  // Vider le buffer après scanf pour éviter les boucles infinies
-            T_Sommet *som = rechercherElement_messageless(abr,element);
-            if (som == NULL) {
-                abr = insererElement(abr, element);
-                count++;
-            } else {
-                printf("L'élément [%d] existe déjà.\n", element);
-            }
-        } else {
-            printf("Entrée invalide, veuillez entrer un entier.\n");
-            viderBuffer();  // Vider le buffer pour éviter les boucles infinies
-        }
-    }
-    return abr;
-}
-
-T_Sommet* minimum(T_Arbre abr) {
-    //trouve le minimum des sommets de l'arbre de racine abr = intervalle ayant la plus petite borne inferieure
-    T_Sommet* sommet = abr;
-    while (sommet->Lson != NULL)
-        sommet = sommet->Lson;
-    return sommet;
-}
-
-T_Arbre supprimerElement(T_Arbre abr, int element){
-    if (abr == NULL)
-        return NULL;
-    if (element< abr->inf)
-        abr->Lson = supprimerElement(abr->Lson, element);
-    else if (element > abr->sup)
-        abr->Rson = supprimerElement(abr->Rson, element);
-    else {
-        //on a trouve l'element
-        if (abr->sup == abr->inf){
-            //le sommet ne contient qu'un element donc on supprime ce sommet
-            if (abr->Lson == NULL && abr->Rson == NULL){
-                free(abr);
-                return NULL;
-            }
-            else if (abr->Lson == NULL){
-                T_Sommet* tmp = abr->Rson;
-                free(abr);
-                return tmp;
-            }
-            else if (abr->Rson == NULL){
-                T_Sommet* tmp = abr->Lson;
-                free(abr);
-                return tmp;
-            }
-            else {
-                T_Sommet* tmp = minimum(abr->Rson);
-                abr->inf = tmp->inf;
-                abr->sup = tmp->sup;
-                abr->Rson = supprimerElement(abr->Rson, tmp->inf);
-                //on supprime le sommet et on le remplace par le sommet ayant la plus petite borne inferieure
-            }
-        }
-        else if (element == abr->inf)
-            abr->inf++;
-        else if (element == abr->sup)
-            abr->sup++;
-        else {
-            //la supression de l'element creer 2 nouveaux intervales
-            T_Sommet* nv = creerSommer(abr->inf);
-            nv->sup = element - 1;
-            nv->Lson = abr->Lson;
-            abr->Lson = NULL;
-            nv->Rson = abr;
-            abr->inf = element + 1;
-            return nv;
-        }
-    }
-    return abr;
-}
-
-int Taille_Memoire(T_Arbre abr){
-    if (abr == NULL){
-        return 0;
-    }
-    else{
-        return sizeof(T_Sommet) + Taille_Memoire(abr->Rson)+ Taille_Memoire(abr->Lson);
-    }
-}
-
-//Vide la mémoire
-void empty_abr_memory(T_Arbre abr){
-    if(abr == NULL){
-        return;
-    }
-    empty_abr(abr->Lson);
-    empty_abr(abr->Rson);
-    free(abr);
-    return;
-
-}
-
-void viderBuffer()
-{
-    int c = 0;
-    while (c != '\n' && c != EOF)
-    {
-        c = getchar();
-    }
 }
