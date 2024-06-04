@@ -113,7 +113,7 @@ int main()
 
             case 9:
                 empty_abr_memory(abr);
-                printf("Sortie du programme\n");
+                printf("Sortie du programme.\n");
                 exit(0);
 
 
