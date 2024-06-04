@@ -84,8 +84,12 @@ int main()
                     printf("Quel sommet ?");
                     scanf("%d",&element);
                     som = rechercherElement_messageless(abr,element);
-                    afficher_fils(*som);
-                }
+                    if(som){
+                        afficher_fils(*som);
+                    }
+                    else{
+                        printf("Le sommet n'existe pas.\n");
+                    }
 
                 break;
             case 7:
