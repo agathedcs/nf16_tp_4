@@ -229,6 +229,7 @@ T_Arbre supprimerElement(T_Arbre abr, int element){
             T_Sommet* nv = creerSommer(abr->inf);
             nv->sup = element - 1;
             nv->Lson = abr->Lson;
+            abr->Lson = NULL;
             nv->Rson = abr;
             abr->inf = element + 1;
             return nv;
