@@ -281,8 +281,8 @@ void empty_abr_memory(T_Arbre abr){
     if(abr == NULL){
         return;
     }
-    empty_abr(abr->Lson);
-    empty_abr(abr->Rson);
+    empty_abr_memory(abr->Lson);
+    empty_abr_memory(abr->Rson);
     free(abr);
     return;
 
