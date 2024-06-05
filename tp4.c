@@ -252,7 +252,7 @@ T_Arbre supprimerElement(T_Arbre abr, int element){
         else if (element == abr->inf)
             abr->inf++;
         else if (element == abr->sup)
-            abr->sup++;
+            abr->sup--;
         else {
             //la supression de l'element creer 2 nouveaux intervales
             T_Sommet* nv = creerSommet(abr->inf);
