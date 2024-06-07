@@ -108,7 +108,9 @@ int main()
                 break;
 
             case 8:
-                printf("La taille en mémoire de l'arbre est égale à %zu bytes\n", Taille_Memoire(abr));
+                printf("La taille en mémoire de l'arbre : %zu octes\n", Taille_Memoire(abr)/8);
+                printf("La taille qui aurait été occupé avec une réprésentation classique : %zu octes\n", Taille_Memoire_Natif(abr)/8);
+                printf("Nombre d'octet gagnés : %zu\n", (Taille_Memoire_Natif(abr)- Taille_Memoire(abr))/8);
                 break;
 
             case 9:
