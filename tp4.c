@@ -121,13 +121,26 @@ void afficherSommet(T_Arbre abr,int retour_ligne){
 }
 
 
-
-
+void parcours_infixe(T_Arbre abr,int retour_ligne) {
+    if (abr != NULL) {
+        parcours_infixe(abr->Lson,0);
+        if (abr->inf == abr->sup){
+            printf("[%d] ",abr->inf);
+        }
+        else {
+            printf("[%d:%d] ", abr->inf, abr->sup);
+        }
+        parcours_infixe(abr->Rson,0);
+        if (retour_ligne){
+            printf("\n");
+        }
+    }
+}
 //Fonction récursive qui affiche tout les éléments dans un abre dans l'ordre croissant
 void afficherElements(T_Arbre abr,int retour_ligne){
-    if (abr != NULL){
-        afficher_intervalle(*abr);
+    if (abr != NULL) {
         afficherElements(abr->Lson,0);
+        afficher_intervalle(*abr);
         afficherElements(abr->Rson,0);
         if (retour_ligne){
             printf("\n");
