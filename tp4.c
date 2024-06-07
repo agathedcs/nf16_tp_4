@@ -289,6 +289,16 @@ int Taille_Memoire(T_Arbre abr){
     }
 }
 
+int Taille_Memoire_Natif(T_Arbre abr){
+    if (abr == NULL){
+        return 0;
+    }
+    else{
+        int nb_element = abr->sup - abr->inf + 1;
+        return sizeof(T_Sommet)*nb_element + Taille_Memoire_Natif(abr->Rson)+ Taille_Memoire_Natif(abr->Lson);
+    }
+}
+
 //Vide la mémoire
 void empty_abr_memory(T_Arbre abr){
     if(abr == NULL){
