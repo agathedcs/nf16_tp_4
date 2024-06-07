@@ -26,6 +26,7 @@ T_Sommet *rechercherElement_messageless(T_Arbre abr, int element);
 
 //Question 4
 void afficherSommet(T_Arbre abr,int retour_ligne);
+void parcours_infixe(T_Arbre abr,int retour_ligne);
 
 //Question 5
 void afficherElements(T_Arbre abr,int retour_ligne);
