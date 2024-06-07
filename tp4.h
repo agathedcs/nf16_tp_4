@@ -37,6 +37,7 @@ T_Arbre supprimerElement(T_Arbre abr, int element);
 
 //Question 7
 int Taille_Memoire(T_Arbre abr);
+int Taille_Memoire_Natif(T_Arbre abr);
 
 //Annexe
 //Fonction qui permet de vérifier si l'arbre est vide, retourne 1 si vrai, sinon 0
