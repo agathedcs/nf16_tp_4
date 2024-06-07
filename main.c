@@ -61,7 +61,7 @@ int main()
                 }
                 else{
                     printf("Sommets du graphe :\n");
-                    afficherSommet(abr,1);
+                    parcours_infixe(abr,1);
                 }
 
                 break;
